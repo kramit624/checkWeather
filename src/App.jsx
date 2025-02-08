@@ -20,7 +20,6 @@ function App() {
   const [uv, setUv] = useState();
   const [uvText, setUVText] = useState("");
 
-  const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 
   const { coords, isGeolocationAvailable, isGeolocationEnabled } =
     useGeolocated({
@@ -40,14 +39,14 @@ function App() {
     if (coords) {
       axios
         .get(
-          `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${coords.latitude},${coords.longitude}&days=1&aqi=yes&alerts=no`
+          `http://api.weatherapi.com/v1/forecast.json?key=6f29a7370fda4809a98162456241909&q=${coords.latitude},${coords.longitude}&days=1&aqi=yes&alerts=no`
         )
         .then((response) => setWeather(response.data))
         .catch((error) => console.error("Error fetching weather:", error));
     } else {
       axios
         .get(
-          `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=patna&days=1&aqi=yes&alerts=no`
+          `http://api.weatherapi.com/v1/forecast.json?key=6f29a7370fda4809a98162456241909&q=patna&days=1&aqi=yes&alerts=no`
         )
         .then((response) => setWeather(response.data))
         .catch((error) => console.error("Error fetching weather:", error));
@@ -60,7 +59,7 @@ function App() {
     if (search) {
       axios
         .get(
-          `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${search}&days=1&aqi=yes&alerts=no`
+          `http://api.weatherapi.com/v1/forecast.json?key=6f29a7370fda4809a98162456241909&q=${search}&days=1&aqi=yes&alerts=no`
         )
         .then((response) => setWeather(response.data))
         .catch((error) => console.error("Error fetching weather:", error));
