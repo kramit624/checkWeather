@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useGeolocated } from "react-geolocated";
-import "./app.css";
 import React from "react";
 import axios from "axios";
 
