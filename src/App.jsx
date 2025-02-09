@@ -20,7 +20,6 @@ function App() {
   const [uv, setUv] = useState();
   const [uvText, setUVText] = useState("");
 
-
   const { coords, isGeolocationAvailable, isGeolocationEnabled } =
     useGeolocated({
       positionOptions: {
@@ -36,14 +35,14 @@ function App() {
   };
 
   useEffect(() => {
-    if (coords) {
+    if (isGeolocationEnabled && coords) {
       axios
         .get(
           `http://api.weatherapi.com/v1/forecast.json?key=6f29a7370fda4809a98162456241909&q=${coords.latitude},${coords.longitude}&days=1&aqi=yes&alerts=no`
         )
         .then((response) => setWeather(response.data))
         .catch((error) => console.error("Error fetching weather:", error));
-    } else {
+    } else if (!isGeolocationEnabled) {
       axios
         .get(
           `http://api.weatherapi.com/v1/forecast.json?key=6f29a7370fda4809a98162456241909&q=patna&days=1&aqi=yes&alerts=no`
@@ -51,9 +50,13 @@ function App() {
         .then((response) => setWeather(response.data))
         .catch((error) => console.error("Error fetching weather:", error));
     }
+  }, [coords, isGeolocationEnabled]);
+
+  // **Fixing the incorrect `setDay()` placement**
+  useEffect(() => {
     const today = new Date();
     setDay(today.toLocaleDateString("en-US", { weekday: "long" }));
-  }, [coords]);
+  }, []); // Runs only once when the component mounts
 
   useEffect(() => {
     if (search) {
@@ -64,15 +67,13 @@ function App() {
         .then((response) => setWeather(response.data))
         .catch((error) => console.error("Error fetching weather:", error));
     }
-    const today = new Date();
-    setDay(today.toLocaleDateString("en-US", { weekday: "long" }));
-  }, [search]);
+  }, [search]); // This useEffect runs when `search` changes
 
   useEffect(() => {
     if (weather?.forecast?.forecastday?.[0]?.day?.uv !== undefined) {
       setUv(weather.forecast.forecastday[0].day.uv);
     }
-  }, [weather]);
+  }, [weather]); // This useEffect runs when `weather` changes
 
   useEffect(() => {
     function getUVCategory(uvIndex) {
